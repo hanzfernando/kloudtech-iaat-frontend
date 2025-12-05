@@ -2,7 +2,7 @@ import axios, { AxiosError } from "axios";
 
 // Configure base API client
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "/api",
+  baseURL: import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || "/api",
   withCredentials: true, // allow cookie mode if backend sets it
 });
 

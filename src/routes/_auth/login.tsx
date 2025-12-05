@@ -1,13 +1,25 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { useLogin } from "@/lib/query/auth/mutations";
+import { useAuth } from "@/providers/AuthProvider";
 
 export const Route = createFileRoute("/_auth/login")({
+  beforeLoad: ({ context }) => {
+    const { isAuthenticated } = context.authentication;
+
+    console.log("Checking authentication status in /_auth/login route");
+    console.log("isAuthenticated:", isAuthenticated);
+    if (isAuthenticated) {
+      throw redirect({ to: "/dashboard" });
+    }
+  },
   component: LoginPage,
 });
 
 function LoginPage() {
   const { mutateAsync: login, isPending } = useLogin();
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -17,12 +29,20 @@ function LoginPage() {
     setError(null);
     try {
       await login({ email, password });
-      // After login, router will re-render and index route will allow access
+      // Navigate immediately after successful login
+      navigate({ to: "/dashboard", replace: true });
     } catch (err: any) {
       const message = err?.response?.data?.message || "Login failed";
       setError(message);
     }
   };
+
+  // Fallback: if auth flips to true due to query invalidation, redirect
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate({ to: "/dashboard", replace: true });
+    }
+  }, [isAuthenticated, navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">

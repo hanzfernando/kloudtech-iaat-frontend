@@ -3,12 +3,9 @@ import { Loader2 } from "lucide-react";
 import { useCheckAuth } from "@/lib/query/auth/queries";
 import { useLogin, useLogout } from "@/lib/query/auth/mutations";
 import type { LoginInput, LoginResponse, UserProfileResponse } from "@/lib/query/auth/types";
-import type { UserResponse } from "@/lib/query/user/queries";
-import { useGetCurrentUser } from "@/lib/query/user/queries";
 
 export interface AuthContext {
 	isAuthenticated: boolean;
-	user: UserResponse | undefined;
 	authUser: UserProfileResponse | undefined;
 	isAuthLoading: boolean;
 	isUserDataLoading: boolean;
@@ -22,11 +19,11 @@ const AuthContext = React.createContext<AuthContext | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const { data: authUser, isLoading: isAuthLoading } = useCheckAuth();
+	console.log("AuthProvider authUser:", authUser);
 	const isAuthenticated = !!authUser?.id;
-	const { data: user, isLoading: isUserLoading } = useGetCurrentUser(isAuthenticated);
 
 	const isLoading = isAuthLoading;
-	const isUserDataLoading = isAuthenticated && isUserLoading;
+	const isUserDataLoading = isAuthenticated;
 
 	const { mutateAsync: login, isPending: isLoginLoading } = useLogin();
 	const { mutateAsync: logout, isPending: isLogoutLoading } = useLogout();
@@ -43,7 +40,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		<AuthContext.Provider
 			value={{
 				isAuthenticated,
-				user: user ?? undefined,
 				authUser: authUser ?? undefined,
 				isAuthLoading,
 				isUserDataLoading,
