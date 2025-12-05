@@ -18,7 +18,6 @@ const AuthContext = React.createContext<AuthContext | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const { data: authUser, isLoading: isAuthLoading } = useCheckAuth();
-	console.log("AuthProvider authUser:", authUser);
 	const isAuthenticated = !!authUser?.id;
 
 	// Do not block rendering; let routes handle pending states.

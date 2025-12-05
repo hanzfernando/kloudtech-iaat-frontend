@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Link } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 import {
   Sidebar,
   SidebarContent,
@@ -27,6 +27,7 @@ export function AppSidebar() {
   const { authUser, logout, isLogoutLoading } = useAuth();
   const { state: sidebarState } = useSidebar();
   const isAdmin = authUser?.role === "ADMIN";
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   const items = [
     { label: "Dashboard", to: "/dashboard", icon: <Home className="h-4 w-4" /> },
@@ -55,20 +56,19 @@ export function AppSidebar() {
           <SidebarGroupLabel className="hidden md:flex">Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.to}>
-                  <Link to={item.to as any} activeOptions={{ exact: true }}>
-                    {({ isActive }) => (
-                      <SidebarMenuButton asChild isActive={isActive} tooltip={item.label}>
-                        <a>
-                          {item.icon}
-                          <span>{item.label}</span>
-                        </a>
-                      </SidebarMenuButton>
-                    )}
-                  </Link>
-                </SidebarMenuItem>
-              ))}
+              {items.map((item) => {
+                const isActive = pathname === item.to;
+                return (
+                  <SidebarMenuItem key={item.to}>
+                    <SidebarMenuButton asChild isActive={isActive} tooltip={item.label}>
+                      <Link to={item.to as any} activeOptions={{ exact: true }}>
+                        {item.icon}
+                        <span>{item.label}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -106,7 +106,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <AppSidebar />
         <SidebarInset>
           <header className="flex h-14 items-center gap-2 border-b bg-background px-2">
-            <div className="flex flex-1 justify-center items-center gap-2 md:justify-start">
+            <div className="flex flex-1 justify-start items-center gap-2 ">
               <SidebarTrigger />
               <div className="text-sm text-muted-foreground">Main</div>
             </div>

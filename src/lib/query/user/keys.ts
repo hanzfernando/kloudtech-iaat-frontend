@@ -1,4 +1,7 @@
 export const userKeys = {
-  root: ["user"] as const,
-  current: () => [...userKeys.root, "current"] as const,
-};
+  root: ['users'] as const,
+  list: () => [...userKeys.root, 'list'] as const,
+  detail: (id: number) => [...userKeys.root, 'detail', id] as const,
+}
+
+export const getUsersKey = userKeys.list()

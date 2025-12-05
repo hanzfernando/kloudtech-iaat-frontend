@@ -1,22 +1,36 @@
-import { useQuery } from "@tanstack/react-query";
 import api from "@/lib/api/axios";
-import { userKeys } from "./keys";
+import { queryOptions, useQuery } from '@tanstack/react-query'
+import { getUsersKey } from './keys'
+import type { Paginated, User } from './types'
 
-export interface UserResponse {
-  id: number;
-  name: string;
-  email: string;
-  role: "ADMIN" | "STAFF" | "VIEWER";
+export const getUsers = {
+  key: getUsersKey,
+  options: () => queryOptions<User[]>({
+    queryKey: getUsersKey,
+    queryFn: async () => {
+      const res = await api.get<Paginated<User>>('/users')
+      return res.data.data
+    },
+  }),
 }
 
-export function useGetCurrentUser(enabled: boolean = true) {
-  return useQuery<UserResponse | null>({
-    queryKey: userKeys.current(),
-    queryFn: async () => {
-      const res = await api.get<UserResponse>("/users/me");
-      return res.data ?? null;
-    },
-    enabled,
-    staleTime: 1000 * 60,
-  });
+export const useGetUsers = () => {
+  return useQuery(getUsers.options())
+}
+
+export const getUsersPaginated = {
+  key: getUsersKey,
+  options: ({ page = 1, pageSize = 10 }: { page?: number; pageSize?: number } = {}) =>
+    queryOptions<Paginated<User>>({
+      queryKey: [...getUsersKey, { page, pageSize }],
+      queryFn: async () => {
+        const res = await api.get<Paginated<User>>('/users', { params: { page, pageSize } })
+        return res.data
+      },
+      placeholderData: (prev) => prev, // keep previous page while fetching
+    }),
+}
+
+export const useGetUsersPaginated = (page?: number, pageSize?: number) => {
+  return useQuery(getUsersPaginated.options({ page, pageSize }))
 }
