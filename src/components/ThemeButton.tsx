@@ -12,7 +12,7 @@ export const ThemeButton: React.FC<{ className?: string }> = ({ className }) => 
       aria-label={resolvedTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
       className={
         'inline-flex items-center gap-2 px-3 py-3 transition ' +
-        'bg-secondary text-secondary-foreground hover:opacity-90 ' +
+        'hover:opacity-90 ' +
         (className ?? '')
       }
     >

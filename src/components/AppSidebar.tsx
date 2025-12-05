@@ -21,6 +21,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Home, Users, Boxes, Tag, LogOut } from "lucide-react";
 import { useAuth } from "@/providers/AuthProvider";
+import ThemeButton from "./ThemeButton";
 
 export function AppSidebar() {
   const { authUser, logout, isLogoutLoading } = useAuth();
@@ -105,8 +106,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <AppSidebar />
         <SidebarInset>
           <header className="flex h-14 items-center gap-2 border-b bg-background px-2">
-            <SidebarTrigger />
-            <div className="text-sm text-muted-foreground">Main</div>
+            <div className="flex flex-1 justify-center items-center gap-2 md:justify-start">
+              <SidebarTrigger />
+              <div className="text-sm text-muted-foreground">Main</div>
+            </div>
+            <div>
+              <ThemeButton className="bg-transparent text-foreground"/>
+            </div>
           </header>
           <div className="flex-1 overflow-auto p-4">{children}</div>
         </SidebarInset>
