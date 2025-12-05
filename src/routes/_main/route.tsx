@@ -4,6 +4,10 @@ import type { AuthContext } from '@/providers/AuthProvider'
 export const Route = createFileRoute('/_main')({
   beforeLoad: async ({ context }) => {
     const auth = (context.authentication as AuthContext) // provided via Router context
+    // If auth status is still loading, let pendingComponent render instead of redirecting.
+    if (auth?.isAuthLoading) {
+      return
+    }
     if (!auth?.isAuthenticated) {
       throw redirect({ to: '/login' })
     }

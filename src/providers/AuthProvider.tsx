@@ -22,19 +22,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	console.log("AuthProvider authUser:", authUser);
 	const isAuthenticated = !!authUser?.id;
 
-	const isLoading = isAuthLoading;
+	// Do not block rendering; let routes handle pending states.
 	const isUserDataLoading = isAuthenticated;
 
 	const { mutateAsync: login, isPending: isLoginLoading } = useLogin();
 	const { mutateAsync: logout, isPending: isLogoutLoading } = useLogout();
-
-	if (isLoading) {
-		return (
-			<div className="flex min-h-screen items-center justify-center">
-				<Loader2 className="animate-spin" />
-			</div>
-		);
-	}
 
 	return (
 		<AuthContext.Provider
