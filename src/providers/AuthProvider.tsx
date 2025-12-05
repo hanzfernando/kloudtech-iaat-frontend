@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Loader2 } from "lucide-react";
 import { useCheckAuth } from "@/lib/query/auth/queries";
 import { useLogin, useLogout } from "@/lib/query/auth/mutations";
 import type { LoginInput, LoginResponse, UserProfileResponse } from "@/lib/query/auth/types";

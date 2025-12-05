@@ -50,7 +50,7 @@ function LoginPage() {
     <div className="min-h-screen relative flex items-center justify-center overflow-hidden">
       {/* Brand gradient background */}
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-muted to-background" />
+        <div className="absolute inset-0 bg-linear-to-br from-primary/20 via-muted to-background" />
         <div className="absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-secondary/20 blur-3xl" />
       </div>
 

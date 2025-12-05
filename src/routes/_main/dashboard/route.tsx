@@ -1,11 +1,8 @@
-import { createFileRoute, Navigate } from '@tanstack/react-router'
-import { useAuth } from '@/providers/AuthProvider'
+import { createFileRoute } from '@tanstack/react-router'
 export const Route = createFileRoute('/_main/dashboard')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const { authUser } = useAuth();
-
   return <div>Hello "/(main)/dashboard"!</div>
 }

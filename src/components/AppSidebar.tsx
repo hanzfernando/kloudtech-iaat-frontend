@@ -19,11 +19,12 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
-import { Home, Users, Boxes, Tag, LogOut, Square } from "lucide-react";
+import { Home, Users, Boxes, Tag, LogOut } from "lucide-react";
 import { useAuth } from "@/providers/AuthProvider";
 
 export function AppSidebar() {
   const { authUser, logout, isLogoutLoading } = useAuth();
+  const { state: sidebarState } = useSidebar();
   const isAdmin = authUser?.role === "ADMIN";
 
   const items = [
@@ -38,7 +39,14 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
-        <div className="px-2 py-1 text-base font-semibold">Kloudtech IAAT</div>
+        {sidebarState === "collapsed" ? (
+          <div className="flex h-8 w-8 items-center justify-center px-2 py-1">
+            <Boxes className="h-6 w-6" />
+
+          </div>
+        ) : (
+          <div className="px-2 py-1 text-base font-semibold">Kloudtech IAAT</div>
+        )}
       </SidebarHeader>
 
       <SidebarContent>
@@ -91,7 +99,6 @@ export function AppSidebar() {
 }
 
 export function AppShell({ children }: { children: React.ReactNode }) {
-  const { state } = useSidebar();
   return (
     <SidebarProvider>
       <div className="flex min-h-svh w-full">
@@ -99,11 +106,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <SidebarInset>
           <header className="flex h-14 items-center gap-2 border-b bg-background px-2">
             <SidebarTrigger />
-            {state === "collapsed" ? (
-              <Square className="h-4 w-4 text-muted-foreground" />
-            ) : (
-              <div className="text-sm text-muted-foreground">Main</div>
-            )}
+            <div className="text-sm text-muted-foreground">Main</div>
           </header>
           <div className="flex-1 overflow-auto p-4">{children}</div>
         </SidebarInset>
