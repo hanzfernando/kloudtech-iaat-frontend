@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useGetUsersPaginated } from '@/lib/query/user/queries'
 import { useCreateUser, useDeleteUser, useUpdateUser } from '@/lib/query/user/mutations'
-import type { CreateUserInput, UpdateUserInput, User } from '@/lib/query/user/types'
+import type { CreateUserInput, UpdateUserInput, User } from '@/lib/types/user'
 import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'

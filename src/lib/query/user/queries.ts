@@ -1,16 +1,13 @@
-import api from "@/lib/api/axios";
 import { queryOptions, useQuery } from '@tanstack/react-query'
 import { getUsersKey } from './keys'
-import type { Paginated, User } from './types'
+import type { Paginated, User } from '@/lib/types/user'
+import * as userService from '@/lib/services/user'
 
 export const getUsers = {
   key: getUsersKey,
   options: () => queryOptions<User[]>({
     queryKey: getUsersKey,
-    queryFn: async () => {
-      const res = await api.get<Paginated<User>>('/users')
-      return res.data.data
-    },
+    queryFn: () => userService.fetchUsers(),
   }),
 }
 
@@ -23,10 +20,7 @@ export const getUsersPaginated = {
   options: ({ page = 1, pageSize = 10 }: { page?: number; pageSize?: number } = {}) =>
     queryOptions<Paginated<User>>({
       queryKey: [...getUsersKey, { page, pageSize }],
-      queryFn: async () => {
-        const res = await api.get<Paginated<User>>('/users', { params: { page, pageSize } })
-        return res.data
-      },
+      queryFn: () => userService.fetchUsersPaginated({ page, pageSize }),
       placeholderData: (prev) => prev, // keep previous page while fetching
     }),
 }

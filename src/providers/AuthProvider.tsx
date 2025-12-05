@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useCheckAuth } from "@/lib/query/auth/queries";
 import { useLogin, useLogout } from "@/lib/query/auth/mutations";
-import type { LoginInput, LoginResponse, UserProfileResponse } from "@/lib/query/auth/types";
+import type { LoginInput, LoginResponse, UserProfileResponse } from "@/lib/types/auth";
 
 export interface AuthContext {
 	isAuthenticated: boolean;

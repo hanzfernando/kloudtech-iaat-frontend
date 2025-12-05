@@ -1,4 +1,5 @@
-export type Role = 'ADMIN' | 'STAFF' | 'VIEWER'
+import type { Role } from './common'
+export type { Paginated } from './api'
 
 export type User = {
   id: number
@@ -26,13 +27,3 @@ export type UpdateUserInput = {
 }
 
 export type DeleteUserInput = { id: number }
-
-export type ApiSuccess<T> = { success: true; data: T; message?: string }
-export type ApiList<T> = ApiSuccess<T[]>
-
-export type Paginated<T> = {
-  data: T[]
-  page: number
-  pageSize: number
-  total: number
-}
