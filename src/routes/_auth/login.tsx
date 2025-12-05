@@ -1,11 +1,8 @@
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Lock, Mail } from "lucide-react";
 import { useLogin } from "@/lib/query/auth/mutations";
 import { useAuth } from "@/providers/AuthProvider";
-import ThemeSwitch from "@/components/ThemeSwitch";
 import ThemeButton from "@/components/ThemeButton";
-import { Button } from "@/components/ui/button";
 import LoginForm from "@/components/login/LoginForm";
 
 export const Route = createFileRoute("/_auth/login")({

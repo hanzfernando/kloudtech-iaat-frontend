@@ -2,6 +2,7 @@ import { createFileRoute, redirect, Outlet, useNavigate } from '@tanstack/react-
 import { useEffect } from 'react'
 import { useAuth } from '@/providers/AuthProvider'
 import type { AuthContext } from '@/providers/AuthProvider'
+import { AppShell } from '@/components/AppSidebar'
 
 export const Route = createFileRoute('/_main')({
   beforeLoad: async ({ context }) => {
@@ -51,5 +52,9 @@ function RouteComponent() {
     )
   }
 
-  return <Outlet />
+  return (
+    <AppShell>
+      <Outlet />
+    </AppShell>
+  )
 }
