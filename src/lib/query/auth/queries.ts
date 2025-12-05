@@ -20,6 +20,11 @@ export function useCheckAuth() {
   return useQuery<UserProfileResponse | null>({
     queryKey: authKeys.check(),
     queryFn: checkAuthQueryFn,
-    staleTime: 1000 * 60, // 1 minute
+    // Reduce frequency and avoid disruptive refetches
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    gcTime: 1000 * 60 * 30, // cache for 30 minutes
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: true,
+    retry: 1,
   });
 }
