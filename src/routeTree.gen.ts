@@ -12,7 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as MainRouteRouteImport } from './routes/_main/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
+import { Route as MainUsersRouteRouteImport } from './routes/_main/users/route'
 import { Route as MainDashboardRouteRouteImport } from './routes/_main/dashboard/route'
+import { Route as MainUsersIndexRouteImport } from './routes/_main/users/index'
 import { Route as MainDashboardIndexRouteImport } from './routes/_main/dashboard/index'
 
 const MainRouteRoute = MainRouteRouteImport.update({
@@ -29,10 +31,20 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MainUsersRouteRoute = MainUsersRouteRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => MainRouteRoute,
+} as any)
 const MainDashboardRouteRoute = MainDashboardRouteRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => MainRouteRoute,
+} as any)
+const MainUsersIndexRoute = MainUsersIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => MainUsersRouteRoute,
 } as any)
 const MainDashboardIndexRoute = MainDashboardIndexRouteImport.update({
   id: '/',
@@ -43,34 +55,47 @@ const MainDashboardIndexRoute = MainDashboardIndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof MainDashboardRouteRouteWithChildren
+  '/users': typeof MainUsersRouteRouteWithChildren
   '/login': typeof AuthLoginRoute
   '/dashboard/': typeof MainDashboardIndexRoute
+  '/users/': typeof MainUsersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof AuthLoginRoute
   '/dashboard': typeof MainDashboardIndexRoute
+  '/users': typeof MainUsersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_main': typeof MainRouteRouteWithChildren
   '/_main/dashboard': typeof MainDashboardRouteRouteWithChildren
+  '/_main/users': typeof MainUsersRouteRouteWithChildren
   '/_auth/login': typeof AuthLoginRoute
   '/_main/dashboard/': typeof MainDashboardIndexRoute
+  '/_main/users/': typeof MainUsersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/login' | '/dashboard/'
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/users'
+    | '/login'
+    | '/dashboard/'
+    | '/users/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/dashboard'
+  to: '/' | '/login' | '/dashboard' | '/users'
   id:
     | '__root__'
     | '/'
     | '/_main'
     | '/_main/dashboard'
+    | '/_main/users'
     | '/_auth/login'
     | '/_main/dashboard/'
+    | '/_main/users/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -102,12 +127,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_main/users': {
+      id: '/_main/users'
+      path: '/users'
+      fullPath: '/users'
+      preLoaderRoute: typeof MainUsersRouteRouteImport
+      parentRoute: typeof MainRouteRoute
+    }
     '/_main/dashboard': {
       id: '/_main/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof MainDashboardRouteRouteImport
       parentRoute: typeof MainRouteRoute
+    }
+    '/_main/users/': {
+      id: '/_main/users/'
+      path: '/'
+      fullPath: '/users/'
+      preLoaderRoute: typeof MainUsersIndexRouteImport
+      parentRoute: typeof MainUsersRouteRoute
     }
     '/_main/dashboard/': {
       id: '/_main/dashboard/'
@@ -130,12 +169,26 @@ const MainDashboardRouteRouteChildren: MainDashboardRouteRouteChildren = {
 const MainDashboardRouteRouteWithChildren =
   MainDashboardRouteRoute._addFileChildren(MainDashboardRouteRouteChildren)
 
+interface MainUsersRouteRouteChildren {
+  MainUsersIndexRoute: typeof MainUsersIndexRoute
+}
+
+const MainUsersRouteRouteChildren: MainUsersRouteRouteChildren = {
+  MainUsersIndexRoute: MainUsersIndexRoute,
+}
+
+const MainUsersRouteRouteWithChildren = MainUsersRouteRoute._addFileChildren(
+  MainUsersRouteRouteChildren,
+)
+
 interface MainRouteRouteChildren {
   MainDashboardRouteRoute: typeof MainDashboardRouteRouteWithChildren
+  MainUsersRouteRoute: typeof MainUsersRouteRouteWithChildren
 }
 
 const MainRouteRouteChildren: MainRouteRouteChildren = {
   MainDashboardRouteRoute: MainDashboardRouteRouteWithChildren,
+  MainUsersRouteRoute: MainUsersRouteRouteWithChildren,
 }
 
 const MainRouteRouteWithChildren = MainRouteRoute._addFileChildren(
