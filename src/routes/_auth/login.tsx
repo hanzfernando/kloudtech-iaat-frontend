@@ -2,6 +2,8 @@ import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useLogin } from "@/lib/query/auth/mutations";
 import { useAuth } from "@/providers/AuthProvider";
+import ThemeSwitch from "@/components/ThemeSwitch";
+import ThemeButton from "@/components/ThemeButton";
 
 export const Route = createFileRoute("/_auth/login")({
   beforeLoad: ({ context }) => {
@@ -45,7 +47,7 @@ function LoginPage() {
   }, [isAuthenticated, navigate]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
+    <div className="min-h-screen flex flex-col items-center justify-center p-4">
       <form onSubmit={onSubmit} className="w-full max-w-sm space-y-4">
         <h1 className="text-2xl font-semibold">Login</h1>
         {error && <p className="text-red-600 text-sm">{error}</p>}
@@ -79,6 +81,7 @@ function LoginPage() {
           {isPending ? "Logging in..." : "Login"}
         </button>
       </form>
+      <ThemeButton className="absolute bottom-8 right-8 rounded-full"/>
     </div>
   );
 }
